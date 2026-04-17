@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const Workouts = () => {
@@ -7,14 +6,17 @@ const Workouts = () => {
 
   useEffect(() => {
     const endpoint = `${process.env.REACT_APP_CODESPACE_URL}/api/workouts/`;
+    console.log('Fetching Workouts from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
         const results = data.results || data;
         setWorkouts(results);
+        console.log('Fetched Workouts:', results);
         setLoading(false);
       })
       .catch(err => {
+        console.error('Error fetching workouts:', err);
         setLoading(false);
       });
   }, []);
@@ -23,7 +25,7 @@ const Workouts = () => {
 
   return (
     <div className="card mb-4">
-      <div className="card-header bg-secondary text-white">
+      <div className="card-header bg-warning text-dark">
         <h2 className="mb-0">Workouts</h2>
       </div>
       <div className="card-body">

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const Leaderboard = () => {
@@ -7,14 +6,17 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const endpoint = `${process.env.REACT_APP_CODESPACE_URL}/api/leaderboard/`;
+    console.log('Fetching Leaderboard from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
         const results = data.results || data;
         setLeaders(results);
+        console.log('Fetched Leaderboard:', results);
         setLoading(false);
       })
       .catch(err => {
+        console.error('Error fetching leaderboard:', err);
         setLoading(false);
       });
   }, []);

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const Users = () => {
@@ -7,14 +6,17 @@ const Users = () => {
 
   useEffect(() => {
     const endpoint = `${process.env.REACT_APP_CODESPACE_URL}/api/users/`;
+    console.log('Fetching Users from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
         const results = data.results || data;
         setUsers(results);
+        console.log('Fetched Users:', results);
         setLoading(false);
       })
       .catch(err => {
+        console.error('Error fetching users:', err);
         setLoading(false);
       });
   }, []);
@@ -23,7 +25,7 @@ const Users = () => {
 
   return (
     <div className="card mb-4">
-      <div className="card-header bg-warning text-dark">
+      <div className="card-header bg-secondary text-white">
         <h2 className="mb-0">Users</h2>
       </div>
       <div className="card-body">

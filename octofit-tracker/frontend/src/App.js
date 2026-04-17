@@ -7,12 +7,18 @@ import Teams from './components/Teams';
 import Users from './components/Users';
 import Workouts from './components/Workouts';
 
+
+import logo from './logo.svg';
+
 function App() {
   return (
     <Router>
       <div className="container mt-4">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
-          <Link className="navbar-brand" to="/">Octofit Tracker</Link>
+        <nav className="navbar navbar-expand-lg mb-4">
+          <Link className="navbar-brand d-flex align-items-center" to="/">
+            <img src={logo} alt="Octofit Logo" className="App-logo" />
+            Octofit Tracker
+          </Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item"><Link className="nav-link" to="/activities">Activities</Link></li>
