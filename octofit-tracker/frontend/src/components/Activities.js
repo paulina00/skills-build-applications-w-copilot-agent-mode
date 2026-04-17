@@ -1,4 +1,7 @@
 
+
+import React, { useEffect, useState } from 'react';
+
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);

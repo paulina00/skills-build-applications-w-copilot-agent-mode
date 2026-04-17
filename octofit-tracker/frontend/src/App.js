@@ -6,18 +6,16 @@ import Leaderboard from './components/Leaderboard';
 import Teams from './components/Teams';
 import Users from './components/Users';
 import Workouts from './components/Workouts';
-
-
 import logo from './logo.svg';
 
 function App() {
   return (
     <Router>
       <div className="container mt-4">
-        <nav className="navbar navbar-expand-lg mb-4">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
           <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img src={logo} alt="Octofit Logo" className="App-logo" />
-            Octofit Tracker
+            <img src={logo} alt="Octofit Logo" className="App-logo mr-2" style={{height: '40px', marginRight: '10px'}} />
+            <span>Octofit Tracker</span>
           </Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">

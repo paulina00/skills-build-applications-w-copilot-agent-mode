@@ -6,14 +6,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// Set the backend API base URL from environment variable
+// Set the backend API base URL from environment variable or infer from window.location
 if (!process.env.REACT_APP_CODESPACE_URL) {
-  // Try to infer from window.location if not set
   const { hostname, protocol } = window.location;
-  const port = '8000';
-  const url = `${protocol}//${hostname.replace('-3000', '-' + port)}.app.github.dev`;
+  let url = `${protocol}//${hostname}`;
+  // If running in Codespaces, adjust port
+  if (hostname.includes('-3000')) {
+    url = `${protocol}//${hostname.replace('-3000', '-8000')}.app.github.dev`;
+  }
   process.env.REACT_APP_CODESPACE_URL = url;
-  // Log for debugging
   console.log('Inferred REACT_APP_CODESPACE_URL:', url);
 }
 
