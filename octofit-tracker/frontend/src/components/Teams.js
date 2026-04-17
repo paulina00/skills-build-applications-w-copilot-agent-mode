@@ -10,13 +10,22 @@ const Teams = () => {
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
-        const results = data.results || data;
+        let results = [];
+        if (Array.isArray(data)) {
+          results = data;
+        } else if (Array.isArray(data.results)) {
+          results = data.results;
+        } else {
+          // Unexpected structure, log and set empty
+          console.error('Unexpected teams response:', data);
+        }
         setTeams(results);
         console.log('Fetched Teams:', results);
         setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching teams:', err);
+        setTeams([]);
         setLoading(false);
       });
   }, []);
@@ -29,26 +38,30 @@ const Teams = () => {
         <h2 className="mb-0">Teams</h2>
       </div>
       <div className="card-body">
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-              <tr>
-                {teams.length > 0 && Object.keys(teams[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {teams.map((team, idx) => (
-                <tr key={team.id || idx}>
-                  {Object.values(team).map((val, i) => (
-                    <td key={i}>{typeof val === 'object' ? JSON.stringify(val) : val}</td>
+        {teams.length === 0 ? (
+          <div className="alert alert-info">No teams found.</div>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead className="thead-dark">
+                <tr>
+                  {Object.keys(teams[0]).map((key) => (
+                    <th key={key}>{key}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {teams.map((team, idx) => (
+                  <tr key={team.id || idx}>
+                    {Object.values(team).map((val, i) => (
+                      <td key={i}>{typeof val === 'object' ? JSON.stringify(val) : val}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

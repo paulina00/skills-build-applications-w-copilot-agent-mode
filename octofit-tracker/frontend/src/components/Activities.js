@@ -12,13 +12,22 @@ const Activities = () => {
     fetch(endpoint)
       .then(res => res.json())
       .then(data => {
-        const results = data.results || data;
+        let results = [];
+        if (Array.isArray(data)) {
+          results = data;
+        } else if (Array.isArray(data.results)) {
+          results = data.results;
+        } else {
+          // Unexpected structure, log and set empty
+          console.error('Unexpected activities response:', data);
+        }
         setActivities(results);
         console.log('Fetched Activities:', results);
         setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching activities:', err);
+        setActivities([]);
         setLoading(false);
       });
   }, []);
@@ -31,26 +40,30 @@ const Activities = () => {
         <h2 className="mb-0">Activities</h2>
       </div>
       <div className="card-body">
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-              <tr>
-                {activities.length > 0 && Object.keys(activities[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map((activity, idx) => (
-                <tr key={activity.id || idx}>
-                  {Object.values(activity).map((val, i) => (
-                    <td key={i}>{typeof val === 'object' ? JSON.stringify(val) : val}</td>
+        {activities.length === 0 ? (
+          <div className="alert alert-info">No activities found.</div>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead className="thead-dark">
+                <tr>
+                  {Object.keys(activities[0]).map((key) => (
+                    <th key={key}>{key}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {activities.map((activity, idx) => (
+                  <tr key={activity.id || idx}>
+                    {Object.values(activity).map((val, i) => (
+                      <td key={i}>{typeof val === 'object' ? JSON.stringify(val) : val}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
